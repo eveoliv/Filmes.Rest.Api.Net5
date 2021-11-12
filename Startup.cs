@@ -23,7 +23,7 @@ namespace Filmes.Rest.Api.Net5
         {
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddDbContext<FilmeContext>(c => c.UseSqlServer(Configuration.GetConnectionString("SqlConnection")));
+            services.AddDbContext<Data.AppDbContext>(c => c.UseSqlServer(Configuration.GetConnectionString("SqlConnection")));
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Filmes.Rest.Api.Net5", Version = "v1" }); });
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Filmes.Rest.Api.Net5.Data;
@@ -13,9 +12,9 @@ namespace Filmes.Rest.Api.Net5.Controllers
     public class FilmeController : ControllerBase
     {
         private readonly IMapper mapper;
-        private readonly FilmeContext context;
+        private readonly AppDbContext context;
 
-        public FilmeController(FilmeContext context, IMapper mapper)
+        public FilmeController(IMapper mapper, AppDbContext context)
         {
             this.mapper = mapper;
             this.context = context;
@@ -27,7 +26,7 @@ namespace Filmes.Rest.Api.Net5.Controllers
             var filme = mapper.Map<Filme>(filmeDto);
             context.Filmes.Add(filme);
             context.SaveChanges();
-            return CreatedAtAction(nameof(RecuperaFilmePorId), new { Id = filme.Id }, filme);            
+            return CreatedAtAction(nameof(RecuperaFilmePorId), new { filme.Id }, filme);            
         }
 
         [HttpGet]
