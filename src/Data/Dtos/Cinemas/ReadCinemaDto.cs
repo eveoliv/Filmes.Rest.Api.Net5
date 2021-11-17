@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Filmes.Rest.Api.Net5.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace Filmes.Rest.Api.Net5.Data.Dtos.Cinema
+namespace Filmes.Rest.Api.Net5.Data.Dtos.Cinemas
 {
     public class ReadCinemaDto
     {
@@ -10,5 +11,7 @@ namespace Filmes.Rest.Api.Net5.Data.Dtos.Cinema
        
         [Required(ErrorMessage = "O campo de nome é obrigatório")]
         public string Nome { get; set; }
+        public Endereco Endereco { get; set; }
+        public Gerente Gerente { get; set; }
     }
 }

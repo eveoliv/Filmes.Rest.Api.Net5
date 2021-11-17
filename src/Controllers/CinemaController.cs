@@ -3,7 +3,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Filmes.Rest.Api.Net5.Data;
 using Filmes.Rest.Api.Net5.Models;
-using Filmes.Rest.Api.Net5.Data.Dtos.Cinema;
+using Filmes.Rest.Api.Net5.Data.Dtos.Cinemas;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Filmes.Rest.Api.Net5.Controllers
 {
@@ -30,9 +32,22 @@ namespace Filmes.Rest.Api.Net5.Controllers
         }
 
         [HttpGet]
-        public IActionResult RecuperarCinemas()
+        public IActionResult RecuperarCinemas([FromQuery] string nomeDoFilme)
         {
-            return Ok(context.Cinemas);
+            var cinemas = context.Cinemas.ToList();
+            if (cinemas == null)            
+                return NotFound();
+
+            if (!string.IsNullOrEmpty(nomeDoFilme))
+            {
+                var qry = from cinema in cinemas
+                          where cinema.Sessoes.Any(sessao =>
+                          sessao.Filme.Titulo == nomeDoFilme)
+                          select cinema;
+                cinemas = qry.ToList();
+            }
+            
+            return Ok(mapper.Map<List<ReadCinemaDto>>(cinemas));
         }
 
         [HttpGet("{id}")]

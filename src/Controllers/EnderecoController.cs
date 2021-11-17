@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Filmes.Rest.Api.Net5.Data;
 using Filmes.Rest.Api.Net5.Models;
-using Filmes.Rest.Api.Net5.Data.Dtos.Endereco;
+using Filmes.Rest.Api.Net5.Data.Dtos.Enderecos;
 
 namespace Filmes.Rest.Api.Net5.Controllers
 {
@@ -12,28 +12,27 @@ namespace Filmes.Rest.Api.Net5.Controllers
     public class EnderecoController : ControllerBase
     {
         private readonly AppDbContext context;
-        private readonly Mapper mapper;
+        private readonly IMapper mapper;
 
-        public EnderecoController(AppDbContext context, Mapper mapper)
+        public EnderecoController(AppDbContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
         }
-    
+
         [HttpPost]
         public IActionResult AdicionarEndereco([FromBody] CreateEnderecoDto enderecoDto)
         {
-            Endereco endereco = mapper.Map<Endereco>(enderecoDto);
+            var endereco = mapper.Map<Endereco>(enderecoDto);
             context.Enderecos.Add(endereco);
             context.SaveChanges();
             return CreatedAtAction(nameof(RecuperaEnderecoPorId), new { Id = endereco.Id }, endereco);
-
         }
 
         [HttpGet("{id}")]
         public IActionResult RecuperaEnderecoPorId(int id)
         {
-            var endereco = context.Cinemas.FirstOrDefault(f => f.Id == id);
+            var endereco = context.Enderecos.FirstOrDefault(f => f.Id == id);
             if (endereco != null)
                 return Ok(mapper.Map<ReadEnderecoDto>(endereco));
 

@@ -3,7 +3,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Filmes.Rest.Api.Net5.Data;
 using Filmes.Rest.Api.Net5.Models;
-using Filmes.Rest.Api.Net5.Data.Dtos;
+using Filmes.Rest.Api.Net5.Data.Dtos.Filmes;
+using System.Collections.Generic;
 
 namespace Filmes.Rest.Api.Net5.Controllers
 {
@@ -26,21 +27,28 @@ namespace Filmes.Rest.Api.Net5.Controllers
             var filme = mapper.Map<Filme>(filmeDto);
             context.Filmes.Add(filme);
             context.SaveChanges();
-            return CreatedAtAction(nameof(RecuperaFilmePorId), new { filme.Id }, filme);            
+            return CreatedAtAction(nameof(RecuperaFilmePorId), new { filme.Id }, filme);
         }
 
         [HttpGet]
-        public IActionResult RecuperarFilmes()
+        public IActionResult RecuperarFilmes([FromQuery] int? classificacaoEtaria = null)
         {
-            return Ok(context.Filmes);
+            if (classificacaoEtaria == null)
+                return Ok(context.Filmes.ToList());
+
+            var filmes = context.Filmes.Where(f => f.ClassificacaoEtaria <= classificacaoEtaria).ToList();
+            if (filmes.Any())    
+                return Ok(mapper.Map<List<ReadFilmeDto>>(filmes));            
+
+            return NotFound();
         }
 
         [HttpGet("{id}")]
         public IActionResult RecuperaFilmePorId(int id)
         {
             var filme = context.Filmes.FirstOrDefault(f => f.Id == id);
-            if (filme != null)                           
-                return Ok(mapper.Map<ReadFilmeDto>(filme));            
+            if (filme != null)
+                return Ok(mapper.Map<ReadFilmeDto>(filme));
 
             return NotFound();
         }
@@ -50,12 +58,12 @@ namespace Filmes.Rest.Api.Net5.Controllers
         {
             var filme = context.Filmes.FirstOrDefault(f => f.Id == id);
 
-            if (filme == null)            
+            if (filme == null)
                 return NotFound();
 
             mapper.Map(filmeDto, filme);
             context.SaveChanges();
-            return NoContent(); 
+            return NoContent();
         }
 
         [HttpDelete("{id}")]

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Filmes.Rest.Api.Net5.Models;
-using Filmes.Rest.Api.Net5.Data.Dtos.Cinema;
+using Filmes.Rest.Api.Net5.Data.Dtos.Cinemas;
 
 namespace Filmes.Rest.Api.Net5.Profiles
 {

@@ -16,18 +16,15 @@ namespace Filmes.Rest.Api.Net5
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddDbContext<Data.AppDbContext>(c => c.UseSqlServer(Configuration.GetConnectionString("SqlConnection")));
+            services.AddDbContext<AppDbContext>(opts => opts.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("SqlConnection")));
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Filmes.Rest.Api.Net5", Version = "v1" }); });
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        }        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
