@@ -1,8 +1,5 @@
-﻿using AutoMapper;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Filmes.Rest.Api.Net5.Data;
-using Filmes.Rest.Api.Net5.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Filmes.Rest.Api.Net5.Services;
 using Filmes.Rest.Api.Net5.Data.Dtos.Enderecos;
 
 namespace Filmes.Rest.Api.Net5.Controllers
@@ -11,30 +8,26 @@ namespace Filmes.Rest.Api.Net5.Controllers
     [Route("[controller]")]
     public class EnderecoController : ControllerBase
     {
-        private readonly AppDbContext context;
-        private readonly IMapper mapper;
+        private readonly EnderecoService service;
 
-        public EnderecoController(AppDbContext context, IMapper mapper)
+        public EnderecoController(EnderecoService service)
         {
-            this.context = context;
-            this.mapper = mapper;
+            this.service = service;
         }
 
         [HttpPost]
         public IActionResult AdicionarEndereco([FromBody] CreateEnderecoDto enderecoDto)
         {
-            var endereco = mapper.Map<Endereco>(enderecoDto);
-            context.Enderecos.Add(endereco);
-            context.SaveChanges();
+            var endereco = service.AdicionaEndereco(enderecoDto);
             return CreatedAtAction(nameof(RecuperaEnderecoPorId), new { Id = endereco.Id }, endereco);
         }
 
         [HttpGet("{id}")]
         public IActionResult RecuperaEnderecoPorId(int id)
         {
-            var endereco = context.Enderecos.FirstOrDefault(f => f.Id == id);
+            var endereco = service.RecuperaEnderecoPorId(id);
             if (endereco != null)
-                return Ok(mapper.Map<ReadEnderecoDto>(endereco));
+                return Ok(endereco);
 
             return NotFound();
         }
@@ -42,25 +35,19 @@ namespace Filmes.Rest.Api.Net5.Controllers
         [HttpPut("{id}")]
         public IActionResult AtualizarEndereco(int id, [FromBody] UpdateEnderecoDto enderecoDto)
         {
-            var endereco = context.Enderecos.FirstOrDefault(f => f.Id == id);
-
-            if (endereco == null)
+            var resultado = service.AtualizarEndereco(id, enderecoDto);
+            if (resultado.IsFailed)
                 return NotFound();
 
-            mapper.Map(enderecoDto, endereco);
-            context.SaveChanges();
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeletaEndereco(int id)
         {
-            var endereco = context.Enderecos.FirstOrDefault(f => f.Id == id);
+            var endereco = service.DeletaEndereco(id);
             if (endereco == null)
                 return NotFound();
-
-            context.Remove(endereco);
-            context.SaveChanges();
 
             return NoContent();
         }

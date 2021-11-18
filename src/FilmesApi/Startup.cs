@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Filmes.Rest.Api.Net5.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,6 +22,11 @@ namespace Filmes.Rest.Api.Net5
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped<FilmeService, FilmeService>();
+            services.AddScoped<CinemaService, CinemaService>();
+            services.AddScoped<SessaoService, SessaoService>();
+            services.AddScoped<GerenteService, GerenteService>();
+            services.AddScoped<EnderecoService, EnderecoService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddDbContext<AppDbContext>(opts => opts.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("SqlConnection")));
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Filmes.Rest.Api.Net5", Version = "v1" }); });
