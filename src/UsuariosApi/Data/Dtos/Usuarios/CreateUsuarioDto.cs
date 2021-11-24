@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UsuariosApi.Data.Dtos.Usuarios
+namespace Filmes.Usuarios.Api.Net5.Data.Dtos.Usuarios
 {
     public class CreateUsuarioDto
     {

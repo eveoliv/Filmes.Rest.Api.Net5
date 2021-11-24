@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filmes.Rest.Api.Net5.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filmes.Rest.Api.Net5", "FilmesApi\Filmes.Rest.Api.Net5.csproj", "{09060C27-C769-458C-A8F0-DC37FE6BDD29}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsuariosApi", "UsuariosApi\UsuariosApi.csproj", "{AAA55CDA-1CF4-405C-9C08-5C7695719760}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filmes.Usuarios.Api.Net5", "UsuariosApi\Filmes.Usuarios.Api.Net5.csproj", "{AAA55CDA-1CF4-405C-9C08-5C7695719760}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

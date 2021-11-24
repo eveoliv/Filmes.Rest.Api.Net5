@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace UsuariosApi.Migrations
+namespace Filmes.Usuarios.Api.Net5.Migrations
 {
     public partial class CriandoUsuario : Migration
     {

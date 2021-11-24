@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UsuariosApi.Models
+namespace Filmes.Usuarios.Api.Net5.Models
 {
     public class Usuario
     {

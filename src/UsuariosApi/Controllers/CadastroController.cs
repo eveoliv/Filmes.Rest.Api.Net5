@@ -1,16 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UsuariosApi.Data.Dtos.Usuarios;
+using Filmes.Usuarios.Api.Net5.Services;
+using Filmes.Usuarios.Api.Net5.Data.Dtos.Usuarios;
+using Filmes.Usuarios.Api.Net5.Data.Dtos.Requests;
 
-namespace UsuariosApi.Controllers
+namespace Filmes.Usuarios.Api.Net5.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class CadastroController : ControllerBase
     {
-        [HttpPost]
-        public IActionResult CadstraUsuario(CreateUsuarioDto usuarioDto)
+        private readonly CadastroService service;
+
+        public CadastroController(CadastroService service)
         {
-            return Ok();
+            this.service = service;
         }
+
+        [HttpPost]
+        public IActionResult CadastraUsuario(CreateUsuarioDto usuarioDto)
+        {
+            var resultado = service.CadastraUsuario(usuarioDto);
+            if (resultado.IsFailed)
+                return StatusCode(500);
+
+            return Ok(resultado.Reasons);
+        }
+
+        [HttpPost("/ativa")]
+        public IActionResult AtivaContaUsuario([FromQuery]AtivaContaRequest request)
+        {
+            var resultado = service.AtivaContaUsuario(request);
+            if (resultado.IsFailed)
+                return StatusCode(500);
+
+            return Ok(resultado.Reasons);
+        }
+
     }
 }
